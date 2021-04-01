@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { useDispatch } from "react-redux";
+import { v4 as uuid } from "uuid";
+import "./App.css";
+import AddMemeForm from "./AddMemeForm";
+import MemeList from "./MemeList";
 
+/**
+ * Main component that holds functions for manipulating memes and rendering
+ * components
+ * @returns JSX code for rendering app
+ */
 function App() {
+  const dispatch = useDispatch();
+
+  /**
+   * Adds a meme using data
+   * @param {Object{string}} data 
+   */
+  const addMeme = data => {
+    dispatch({ type: "ADD", payload: { ...data, id: uuid() } });
+  };
+
+  /**
+   * Deletes meme with the button that was clicked
+   * @param {Object} evt 
+   */
+  const deleteMeme = evt => {
+    const { id } = evt.target.parentElement;
+    dispatch({ type: "DELETE", id });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AddMemeForm addMeme={ addMeme } />
+      <MemeList deleteMeme={ evt => deleteMeme(evt) }/>
     </div>
   );
 }
