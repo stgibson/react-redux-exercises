@@ -26,6 +26,7 @@ const AddMemeForm = ({ addMeme }) => {
   const handleSubmit = evt => {
     evt.preventDefault();
     addMeme(formData);
+    setFormData(initFormData);
   };
 
   return (
