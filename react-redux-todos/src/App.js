@@ -1,23 +1,38 @@
-import logo from './logo.svg';
+import React from "react";
+import { useDispatch } from "react-redux";
+import { v4 as uuid } from "uuid";
+import AddTodoForm from "./AddTodoForm";
+import TodoList from "./TodoList";
 import './App.css';
 
+/**
+ * Main component that holds functions and displays other components
+ * @returns JSX code for rendering app
+ */
 function App() {
+  const dispatch = useDispatch();
+
+  /**
+   * Adds todo using data
+   * @param {Object{string}} data 
+   */
+  const addTodo = data => {
+    dispatch({ type: "ADD", payload: { ...data, id: uuid() } });
+  };
+
+  /**
+   * Deletes the todo with the button that was clicked on
+   * @param {Object{any}} evt 
+   */
+  const deleteTodo = evt => {
+    const { id } = evt.target.parentElement;
+    dispatch({ type: "DELETE", id })
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <AddTodoForm addTodo={ addTodo } />
+      <TodoList deleteTodo={ evt => deleteTodo(evt) } />
     </div>
   );
 }
